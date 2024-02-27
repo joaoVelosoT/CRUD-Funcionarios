@@ -128,7 +128,14 @@ public class Sistema {
 					if (planoSaude.length() == 0) {
 						System.out.println("Não deixe espaços em branco");
 					} else {
-						planoSaudeVazio = true;
+						if (planoSaude.equalsIgnoreCase("basico") || planoSaude.equalsIgnoreCase("premium")
+								|| planoSaude.equalsIgnoreCase("Platinum Premium Plus")) {
+							planoSaudeVazio = true;
+						} else {
+							System.out.println("Digite o plano");
+							System.out.println("Basico || Premium || Platinum Premium Plus");
+						}
+
 					}
 				}
 
@@ -159,6 +166,16 @@ public class Sistema {
 					System.out.println("Digite o numero do funcionario que deseja deletar");
 					try {
 						deletarFunc = sc.nextInt();
+						if (deletarFunc < 0) {
+							System.out.println("Digite um numero positivo");
+							continue;
+						}
+						try {
+							pessoas.get(deletarFunc);
+						} catch (Exception e) {
+							System.out.println("Funcionario nao encontrado");
+							break;
+						}
 						pessoas.remove(deletarFunc);
 						System.out.println("Funcionario deletado com sucesso !!!");
 						funcExiste = true;
@@ -166,11 +183,12 @@ public class Sistema {
 						System.out.println(" ");
 						System.out.println("Digite novamente !!!");
 						System.out.println(" ");
-						System.out.println("Lembre se de que não e permitido, caracteres e numeros negativos");
+						System.out.println("Não e permitido letras ");
 						sc.nextLine();
 					}
 
 				}
+				continue;
 			}
 
 			case 4: {
@@ -184,15 +202,20 @@ public class Sistema {
 					System.out.println("Digite o numero do objeto que deseja modificar");
 					try {
 						modificarFunc = sc.nextInt();
+						try {
+							if (modificarFunc < 0) {
+								System.out.println("Digite um numero maior que 0");
+								continue;
+							}
+							pessoas.get(modificarFunc);
+
+						} catch (Exception e) {
+							System.out.println("Funcionario nao encontrado");
+							break;
+						}
 						if (modificarFunc < 0) {
 							System.out.println("Digite um numero positivo");
 						} else {
-
-							if (pessoas.size() < modificarFunc) {
-								System.out.println("Funcionario nao encontrado no sistema");
-								continue;
-
-							}
 
 							System.out.println("Digite o que voce deseja modificar");
 							System.out.println(" 1 - Nome");
@@ -328,9 +351,11 @@ public class Sistema {
 							case 7: {
 								// Inicio do input do plano de saude, e da verificacao
 								boolean planoSaudeVazioMod = false;
+								String planoSaudeMod = "";
 								while (planoSaudeVazioMod == false) {
 									System.out.println("Digite o plano de saúde");
-									String planoSaudeMod = sc.nextLine();
+
+									planoSaudeMod = sc.nextLine();
 									if (planoSaudeMod.length() == 0) {
 										System.out.println("Não deixe espaços em branco");
 									} else {
@@ -468,47 +493,107 @@ public class Sistema {
 						sc.nextLine();
 					}
 				}
-
+				continue;
 			}
 			case 5: {
-				
-				
-				int visualizarFunc = 0;
-				
-				
-				System.out.println("Qual funcionario voce deseja visualizar?");
-				try {
-					 visualizarFunc = sc.nextInt();
-					if (visualizarFunc < 0) {
-						System.out.println("Digite um numero positivo");
-					} else {
-						if (pessoas.size() < visualizarFunc) {
-							System.out.println("Funcionario nao encontrado no sistema");
-							continue;
 
+				boolean visuUnico = false;
+				int visuFunc = 0;
+				while (visuUnico == false) {
+					System.out.println("Digite qual funcionario voce deseja visualizar");
+					try {
+						visuFunc = sc.nextInt();
+						if (visuFunc < 0) {
+							System.out.println("Digite um valor maior que 0");
+						} else {
+							if (pessoas.size() < visuFunc) {
+								System.out.println("Funcionario nao encontrado");
+							} else {
+								System.out.println("Funcionario: " + visuFunc);
+								System.out.println("Nome: " + pessoas.get(visuFunc).getNome());
+								System.out.println("Salario bruto: " + pessoas.get(visuFunc).getSalarioBruto());
+								System.out.println(
+										"Numero de dependentes: " + pessoas.get(visuFunc).getNumeroDependentes());
+								System.out.println("VR: " + pessoas.get(visuFunc).isVr());
+								System.out.println("VA: " + pessoas.get(visuFunc).isVa());
+								System.out.println("VT: " + pessoas.get(visuFunc).isVt());
+								visuUnico = true;
+							}
 						}
-					}catch(ex) {
-						
-					}
-					
 
-				System.out.println("Funcionario" + visualizarFunc);
-				pessoas.get(visualizarFunc).getNome();
-				pessoas.get(visualizarFunc).getSalarioBruto();
-				pessoas.get(visualizarFunc).getNumeroDependentes();
-				pessoas.get(visualizarFunc).isVr();
-				pessoas.get(visualizarFunc).isVa();
-				pessoas.get(visualizarFunc).isVt();
-				pessoas.get(visualizarFunc).getPlanoDeSaude();
+					} catch (Exception e) {
+						System.out.println("Digite um valor numerico");
+						sc.nextLine();
+					}
+					continue;
+				}
+
+			}
 
 				continue;
+			case 6: {
+				// calcular o salario liquido
+				boolean loopLiquido = false;
+				int funcLiquido = 0;
+				while (loopLiquido == false) {
+					System.out.println("digite o numero do funcionario");
+					try {
+						funcLiquido = sc.nextInt();
+						if (funcLiquido < 0) {
+							System.out.println("Digite um valor positivo");
+							continue;
+						}
+						try {
+							pessoas.get(funcLiquido);
+						} catch (Exception e) {
+							System.out.println("Funcionario nao encontrado");
+							break;
+						}
 
-				
-			
-			
+					} catch (Exception e) {
+						System.out.println("Digite um valor numerico !!");
+						sc.nextLine();
+						continue;
+					}
+
+					double salarioLiquido = pessoas.get(funcLiquido).getSalarioBruto();
+					if (pessoas.get(funcLiquido).isVr() == true) {
+						salarioLiquido -= salarioLiquido * 3 / 100;
+					}
+					if (pessoas.get(funcLiquido).isVa() == true) {
+						salarioLiquido -= salarioLiquido * 5 / 100;
+					}
+					if (pessoas.get(funcLiquido).isVt() == true) {
+						salarioLiquido -= salarioLiquido * 6 / 100;
+					}
+
+					if (pessoas.get(funcLiquido).getPlanoDeSaude().equalsIgnoreCase("basico")) {
+						salarioLiquido -= 100;
+					} else if (pessoas.get(funcLiquido).getPlanoDeSaude().equalsIgnoreCase("premium")) {
+						salarioLiquido -= 250;
+					} else if (pessoas.get(funcLiquido).getPlanoDeSaude().equalsIgnoreCase("platinum premium plus")) {
+						salarioLiquido -= 500;
+					}
+
+					salarioLiquido -= (salarioLiquido * 26 / 100);
+					salarioLiquido = salarioLiquido - pessoas.get(funcLiquido).getNumeroDependentes() * 50;
+
+					System.out.printf("Salario Liquido: %f" , salarioLiquido);
+					loopLiquido = true;
+				}
+				continue;
+			}
+			case 9: {
+				System.exit(0);
+			}
 			}
 
 		} while (true);
+
+	}
+
+	private static void possuiVr(double salarioLiquido) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -519,6 +604,7 @@ public class Sistema {
 		System.out.println("3 - Deletar Funcionarios");
 		System.out.println("4 - Modificar Funcionarios");
 		System.out.println("5 - Visualizar Funcionario especifico");
+		System.out.println("6 - Somar Salario Liquido");
 		System.out.println("9 - Sai do Sistema");
 		System.out.println("###############");
 	}
