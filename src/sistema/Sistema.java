@@ -590,7 +590,7 @@ public class Sistema {
 					salarioLiquido -= (salarioLiquido * 26 / 100);
 					salarioLiquido = salarioLiquido - pessoas.get(funcLiquido).getNumeroDependentes() * 50;
 
-					System.out.printf("Salario Liquido: %f", salarioLiquido);
+					System.out.println("Salario Liquido: "+ salarioLiquido);
 					loopLiquido = true;
 				}
 				continue;
