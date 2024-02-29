@@ -351,17 +351,23 @@ public class Sistema {
 							case 7: {
 								// Inicio do input do plano de saude, e da verificacao
 								boolean planoSaudeVazioMod = false;
-								String planoSaudeMod = "";
 								while (planoSaudeVazioMod == false) {
 									System.out.println("Digite o plano de saúde");
-
-									planoSaudeMod = sc.nextLine();
+									String planoSaudeMod = sc.nextLine();
 									if (planoSaudeMod.length() == 0) {
 										System.out.println("Não deixe espaços em branco");
 									} else {
-										pessoas.get(modificarFunc).setPlanoDeSaude(planoSaudeMod);
-										planoSaudeVazioMod = true;
-										validacaoModificar = true;
+										if (planoSaudeMod.equalsIgnoreCase("basico")
+												|| planoSaudeMod.equalsIgnoreCase("premium")
+												|| planoSaudeMod.equalsIgnoreCase("Platinum Premium Plus")) {
+											pessoas.get(modificarFunc).setPlanoDeSaude(planoSaudeMod);
+											planoSaudeVazioMod = true;
+											validacaoModificar = true;
+										} else {
+											System.out.println("Digite o plano");
+											System.out.println("Basico || Premium || Platinum Premium Plus");
+										}
+
 									}
 								}
 								continue;
@@ -479,9 +485,16 @@ public class Sistema {
 									if (planoSaudeMod.length() == 0) {
 										System.out.println("Não deixe espaços em branco");
 									} else {
-										pessoas.get(modificarFunc).setPlanoDeSaude(planoSaudeMod);
-										planoSaudeVazioMod = true;
-										validacaoModificar = true;
+										if (planoSaudeMod.equalsIgnoreCase("basico")
+												|| planoSaudeMod.equalsIgnoreCase("premium")
+												|| planoSaudeMod.equalsIgnoreCase("Platinum Premium Plus")) {
+											pessoas.get(modificarFunc).setPlanoDeSaude(planoSaudeMod);
+											planoSaudeVazioMod = true;
+										} else {
+											System.out.println("Digite o plano");
+											System.out.println("Basico || Premium || Platinum Premium Plus");
+										}
+
 									}
 								}
 								continue;
@@ -496,41 +509,40 @@ public class Sistema {
 				continue;
 			}
 			case 5: {
-
-				boolean visuUnico = false;
+				boolean visuFuncLoop = false;
 				int visuFunc = 0;
-				while (visuUnico == false) {
+				while (visuFuncLoop == false) {
 					System.out.println("Digite qual funcionario voce deseja visualizar");
 					try {
 						visuFunc = sc.nextInt();
 						if (visuFunc < 0) {
 							System.out.println("Digite um valor maior que 0");
-						} else {
-							if (pessoas.size() < visuFunc) {
-								System.out.println("Funcionario nao encontrado");
-							} else {
-								System.out.println("Funcionario: " + visuFunc);
-								System.out.println("Nome: " + pessoas.get(visuFunc).getNome());
-								System.out.println("Salario bruto: " + pessoas.get(visuFunc).getSalarioBruto());
-								System.out.println(
-										"Numero de dependentes: " + pessoas.get(visuFunc).getNumeroDependentes());
-								System.out.println("VR: " + pessoas.get(visuFunc).isVr());
-								System.out.println("VA: " + pessoas.get(visuFunc).isVa());
-								System.out.println("VT: " + pessoas.get(visuFunc).isVt());
-								visuUnico = true;
-							}
+							continue;
 						}
-
+						try {
+							pessoas.get(visuFunc);
+							visuFuncLoop = true;
+						} catch (Exception e) {
+							System.out.println("Funcionario nao encontrado");
+							break;
+						}
 					} catch (Exception e) {
-						System.out.println("Digite um valor numerico");
 						sc.nextLine();
+						System.out.println("Digite um valor numerico");
+						continue;
 					}
-					continue;
-				}
 
+					System.out.println("Informações do funcionario.....");
+					System.out.println("Funcionario: " + pessoas.get(visuFunc).getNome());
+					System.out.println("Salario Bruto: " + pessoas.get(visuFunc).getSalarioBruto());
+					System.out.println("Numero de dependentes: " + pessoas.get(visuFunc).getNumeroDependentes());
+					System.out.println("Vr: " + pessoas.get(visuFunc).isVr());
+					System.out.println("Va: " + pessoas.get(visuFunc).isVa());
+					System.out.println("Vt: " + pessoas.get(visuFunc).isVt());
+				}
+				continue;
 			}
 
-				continue;
 			case 6: {
 				// calcular o salario liquido
 				boolean loopLiquido = false;
@@ -578,7 +590,7 @@ public class Sistema {
 					salarioLiquido -= (salarioLiquido * 26 / 100);
 					salarioLiquido = salarioLiquido - pessoas.get(funcLiquido).getNumeroDependentes() * 50;
 
-					System.out.printf("Salario Liquido: %f" , salarioLiquido);
+					System.out.printf("Salario Liquido: %f", salarioLiquido);
 					loopLiquido = true;
 				}
 				continue;
