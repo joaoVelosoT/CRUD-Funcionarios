@@ -37,7 +37,7 @@ public class Sistema {
 					System.out.println("Digite o nome");
 					nome = sc.nextLine();
 					if (nome.length() == 0) {
-						System.out.println("Não deixe espaços vazios");
+						System.err.println("Não deixe espaços vazios");
 
 					} else {
 						nomeVazio = true;
@@ -50,13 +50,13 @@ public class Sistema {
 					System.out.println("Digite o salario");
 					try {
 						salarioBruto = sc.nextDouble();
-						if (salarioBruto < 0) {
-							System.out.println("Digite um valor positivo");
+						if (salarioBruto < 500) {
+							System.err.println("Erro - Digite um valor maior que 500 R$");
 						} else {
 							salarioPositivo = true;
 						}
 					} catch (Exception e) {
-						System.out.println("Digite um valor numerico");
+						System.err.println("Erro - Digite um valor numerico");
 					}
 					sc.nextLine();
 				}
@@ -68,12 +68,12 @@ public class Sistema {
 					try {
 						numeroDependentes = sc.nextInt();
 						if (numeroDependentes < 0) {
-							System.out.println("Não e possivel ter menos de 0 dependentes");
+							System.err.println("Erro - Não e possivel ter menos de 0 dependentes");
 						} else {
 							dependentePositivo = true;
 						}
 					} catch (Exception e) {
-						System.out.println("Digite um valor numerico");
+						System.err.println("Erro - Digite um valor numerico");
 					}
 					sc.nextLine();
 				}
@@ -87,7 +87,7 @@ public class Sistema {
 						vr = sc.nextBoolean();
 						vrPositivo = true;
 					} catch (Exception e) {
-						System.out.println("digite true ou false");
+						System.err.println("Erro - Digite True ou False");
 						sc.nextLine();
 					}
 				}
@@ -101,7 +101,7 @@ public class Sistema {
 						va = sc.nextBoolean();
 						vaPositivo = true;
 					} catch (Exception e) {
-						System.out.println("Digite true ou false");
+						System.err.println("Erro - Digite True ou False");
 						sc.nextLine();
 					}
 				}
@@ -114,7 +114,7 @@ public class Sistema {
 						vt = sc.nextBoolean();
 						vtPositivo = true;
 					} catch (Exception e) {
-						System.out.println("Digite true ou false");
+						System.err.println("Erro - Digite True ou False");
 						sc.nextLine();
 					}
 				}
@@ -126,7 +126,7 @@ public class Sistema {
 					System.out.println("Digite o plano de saúde");
 					planoSaude = sc.nextLine();
 					if (planoSaude.length() == 0) {
-						System.out.println("Não deixe espaços em branco");
+						System.err.println("Erro - Não deixe espaços em branco");
 					} else {
 						if (planoSaude.equalsIgnoreCase("basico") || planoSaude.equalsIgnoreCase("premium")
 								|| planoSaude.equalsIgnoreCase("Platinum Premium Plus")) {
@@ -154,7 +154,14 @@ public class Sistema {
 					System.out.println("VA: " + funcionarios.isVa());
 					System.out.println("VT: " + funcionarios.isVt());
 					System.out.println("Plano de Saúde: " + funcionarios.getPlanoDeSaude());
+					System.out.println("");
 				});
+				try {
+					pessoas.get(0); 
+				} catch (Exception e) {
+					System.out.println("Nenhum funcionario registrado no sistema...");
+				}
+				
 				continue;
 			}
 			case 3: {
@@ -167,23 +174,25 @@ public class Sistema {
 					try {
 						deletarFunc = sc.nextInt();
 						if (deletarFunc < 0) {
-							System.out.println("Digite um numero positivo");
+							System.err.println("Erro - Digite um valor positivo !");
 							continue;
 						}
 						try {
 							pessoas.get(deletarFunc);
 						} catch (Exception e) {
-							System.out.println("Funcionario nao encontrado");
+							System.err.println("Erro - Funcionario não encontrado !");
+
 							break;
+
 						}
 						pessoas.remove(deletarFunc);
 						System.out.println("Funcionario deletado com sucesso !!!");
 						funcExiste = true;
 					} catch (Exception e) {
 						System.out.println(" ");
-						System.out.println("Digite novamente !!!");
+						
+						System.err.println("Erro - Não e permitido letras ");
 						System.out.println(" ");
-						System.out.println("Não e permitido letras ");
 						sc.nextLine();
 					}
 
@@ -204,17 +213,17 @@ public class Sistema {
 						modificarFunc = sc.nextInt();
 						try {
 							if (modificarFunc < 0) {
-								System.out.println("Digite um numero maior que 0");
+								System.err.println("Erro - Digite um numero maior que 0");
 								continue;
 							}
 							pessoas.get(modificarFunc);
 
 						} catch (Exception e) {
-							System.out.println("Funcionario nao encontrado");
+							System.err.println("Erro - Funcionario nao encontrado");
 							break;
 						}
 						if (modificarFunc < 0) {
-							System.out.println("Digite um numero positivo");
+							System.err.println("Erro - Digite um numero positivo");
 						} else {
 
 							System.out.println("Digite o que voce deseja modificar");
@@ -590,7 +599,7 @@ public class Sistema {
 					salarioLiquido -= (salarioLiquido * 26 / 100);
 					salarioLiquido = salarioLiquido - pessoas.get(funcLiquido).getNumeroDependentes() * 50;
 
-					System.out.println("Salario Liquido: "+ salarioLiquido);
+					System.out.println("Salario Liquido: " + salarioLiquido);
 					loopLiquido = true;
 				}
 				continue;
@@ -610,6 +619,7 @@ public class Sistema {
 	}
 
 	static void menu() {
+		System.out.println("");
 		System.out.println("###############");
 		System.out.println("1 - Cadastrar Funcionarios");
 		System.out.println("2 - Listar Funcionarios");
@@ -619,6 +629,7 @@ public class Sistema {
 		System.out.println("6 - Somar Salario Liquido");
 		System.out.println("9 - Sai do Sistema");
 		System.out.println("###############");
+		System.out.println("");
 	}
 
 }
